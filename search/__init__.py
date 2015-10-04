@@ -40,6 +40,12 @@ def _lookup_word(word, relationship, begins_with, ends_with):
 	return found_words
 
 def _sort_by_frequency (all_words):
+	"""Groups a list of list by their frequency.
+	
+	:param all_words: a list of lists with all words
+	
+	:return: a list of words as keys and their frequency as values.
+	"""
 	frequency_list = {}
 	for group in all_words:
 		for word in group:
@@ -49,6 +55,7 @@ def _sort_by_frequency (all_words):
 				frequency_list[word] += 1
 
 	return frequency_list
+	
 def _get_highest_frequency(frequency_list):
 	"""Returns the highest frequency value in a list sorted by word frequency.
 
