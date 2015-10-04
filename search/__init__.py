@@ -70,7 +70,7 @@ def _get_highest_frequency(frequency_list):
 
 	return highest
 
-def parse_search_entry(entry, relationship, begins_with = '', ends_with = ''):
+def parse_search_entry(entry, relationship = "Synonym", begins_with = '', ends_with = ''):
 	"""Takes a search entry and returns the related words with the highest frequency
 	according to the search terms.
 

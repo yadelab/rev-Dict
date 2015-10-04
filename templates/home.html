@@ -3,11 +3,26 @@
             <title> RevDict</title>
             <style type="text/css">
 
+
 form.form-inline {
     display: table-caption;
 }
+.h2, h2 {
+    font-size: 70px !important;
+    color: white !important;
+}
 .container {
-    margin-left: 32em;
+    padding-top: 47px;
+}
+a {
+    color: #DEEBF7;
+    text-decoration: none;
+}
+.container {
+    margin-left: 32em !important;
+}
+form.form-inline {
+    color: white;
 }
 body {
   font-family: Sans-serif;
@@ -15,36 +30,63 @@ body {
   margin: auto;
   padding: 20px;
   margin-top: 10px;
-  background-color: #fff;
+
+  background-color: #502921 !important;
   border-radius: 5px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
-
+.rd{
+  color:white;
+  font-size: 26px;
+}
             </style>
-
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         </head> 
 
+
+
+<div class="collapse navbar-collapse" id="navbar-collapse">
+    <ul class="nav navbar-nav navbar-left">
+    <li><a href="/home/" id="homeBtn">Home</a></li>
+    <li><a href="/docs/" id="docBtn">About</a></li>
+    <li><a href="/demo" id="docBtn">Contact</a></li>
+   
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="/about/" id="aboutBtn">Sign Up</a></li>
+      <li><a href="/about/" id="aboutBtn">log-In</a></li>
+    </ul>
+
+
+
 <div class="container">
   <h2>RevDict</h2>
-  <p>Type the words you were thinking of</p>
-  <form class="form-inline" role="form">
+  <p>Find that word you are looking for.</p>
+  <form action = "/api/" class="form-inline" role="form" method = "POST">
     <div class="form-group">
-      <label for="email">Words Separated by comma</label>
-      <input type="email" class="form-control" id="email" placeholder="Enter email">
+      <label>Search Bar</label>
+      <input type="text" name = "search_entry" class="form-control" id="search" placeholder="Enter search words (separated by a space)">
     </div>
     <div class="form-group">
-      <label for="pwd">Starts With</label>
-      <input type="password" class="form-control" id="pwd" placeholder="first letter">
+      <label>Starts With?</label>
+      <input type="text" name = "begins_with" class="form-control" id="start" placeholder="first letters">
     </div>
 
      <div class="form-group">
-      <label for="pwd">Ends With</label>
-      <input type="password" class="form-control" id="txt" placeholder="last letter">
+      <label>Ends With?</label>
+      <input type="text" name = "ends_with" class="form-control" id="end" placeholder="last letters">
     </div>
    
     <button type="submit" class="btn btn-default">Submit</button>
   </form>
+  <body>
+    <div class ="rd">
+    {% if results %}
+      <h1>Search entry: {{results[0]}}</h1>
+      <p class = "results">Results: {{results[1]}}</p>
+    {% endif %}
+  </div>
+  </body>
 </div>
 
 

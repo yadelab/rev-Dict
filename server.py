@@ -1,7 +1,7 @@
 import sqlite3
 import time
+from search import *
 from flask import Flask, request, g, render_template, redirect
-
 app = Flask(__name__)
 DATABASE = 'hakks.db'
 
@@ -22,23 +22,29 @@ def db_read_hakks():
 	cur.execute("SELECT * FROM hakks")
 	return cur.fetchall()
 
-def db_add_hakk(name, hakk):
+def db_add_hakk(search, results):
 	cur = get_db().cursor()
-	t = str(time.time())
-	hakk_info = (name, t, hakk)
-	cur.execute("INSERT INTO hakks VALUES (?, ?, ?)", hakk_info)
+	hakk_info = (search, results)
+	cur.execute("INSERT INTO hakks VALUES (?, ?)", hakk_info)
 	get_db().commit()
 
 @app.route("/")
 def hello():
 	hakks = db_read_hakks()
-	return render_template('index.html', hakks = hakks)
+	return render_template('home.html')
 
-@app.route("/api/hakk", methods=["POST"])
+@app.route("/api/", methods=["POST"])
 def receive_hakk():
-	print(request.form)
-	db_add_hakk(request.form['name'], request.form['hakk'])
-	return redirect("/")
+	form = request.form
+	entry = form["search_entry"]
+	begins_with = form["begins_with"]
+	ends_with = form["ends_with"]
+
+	results = parse_search_entry(entry, 'Synonym', begins_with, ends_with)
+	results = ' '.join(results)
+	#db_add_hakk(search, results)
+	show = [entry, results]
+	return render_template('home.html', results = show)
 
 if __name__ == "__main__":
 	app.run()
