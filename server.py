@@ -40,9 +40,9 @@ def receive_hakk():
 	begins_with = form["begins_with"]
 	ends_with = form["ends_with"]
 
-	results = parse_search_entry(entry, 'Synonym', begins_with, ends_with)
-	results = ' '.join(results)
-	#db_add_hakk(search, results)
+	results_list = parse_search_entry(entry, 'Synonym', begins_with, ends_with)
+	results = ' '.join(results_list)
+
 	show = [entry, results]
 	return render_template('home.html', results = show)
 
