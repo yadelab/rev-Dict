@@ -71,13 +71,15 @@ def _get_highest_frequency(frequency_list):
 	return highest
 
 def parse_search_entry(entry, relationship, begins_with = '', ends_with = ''):
-	"""Takes a search entry and returns the words with the highest frequency.
+	"""Takes a search entry and returns the related words with the highest frequency
+	according to the search terms.
 
 	:param word: word to look up
 	:param relationship: relationship to entered word ('Synonym' or 'Antonym')
 	:param begins_with: letters that the desired word starts with
 	:param ends_with: letters that the desired word ends with
 
+	:return: a list of the related words with the highest frequency
 	"""
 	entry = entry.strip()
 	words = entry.split(' ')
@@ -89,10 +91,9 @@ def parse_search_entry(entry, relationship, begins_with = '', ends_with = ''):
 	words_by_frequency = _sort_by_frequency(all_related_words)
 	highest_frequency = _get_highest_frequency(words_by_frequency)
 
-	best_related_words = [word for word, freq in words_by_frequency.items() if freq == highest_frequency]
+	best_related_words = sorted([word for word, freq in words_by_frequency.items() if freq == highest_frequency])
 
 	if len(best_related_words) < 10:
 		return best_related_words
 	else:
 		return best_related_words[0:10]
-
