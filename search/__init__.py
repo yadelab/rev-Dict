@@ -93,4 +93,4 @@ def parse_search_entry(entry, relationship, begins_with = '', ends_with = '', th
 		if results_queue.empty():
 			break
 
-	return results_list
+	return sorted(results_list)
