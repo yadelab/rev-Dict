@@ -1,4 +1,6 @@
 import requests, re
+import queue
+import sys
 
 API_KEY = 'eb4e57bb2c34032da68dfeb3a0578b68'
 URL_MASK = 'http://words.bighugelabs.com/api/2/{key}/{word}/'
@@ -7,15 +9,23 @@ ABBREVIATIONS = {
 	'Antonym': 'ant',
 }
 
+class Word(object):
+    def __init__(self, priority, word):
+        self.priority = priority
+        self.word = word
+        return
+    def __lt__(self, other):
+    	selfPriority = self.priority
+    	otherPriority = other.priority
+    	return selfPriority > otherPriority
+
 def _lookup_word(word, relationship, begins_with, ends_with):
 	"""Looks up a word in the Big Huge Thesaurus and returns
 	similar words that fit the parameters.
-
 	:param word: word to look up
 	:param relationship: relationship to entered word ('Synonym' or 'Antonym')
 	:param begins_with: letters that the desired word starts with
 	:param ends_with: letters that the desired word ends with
-
 	:return: a list of similar words that match the requirements
 	"""
 	url = URL_MASK.format(key= API_KEY, word = word)
@@ -54,32 +64,19 @@ def _sort_by_frequency (all_words):
 			else:
 				frequency_list[word] += 1
 
-	return frequency_list
-	
-def _get_highest_frequency(frequency_list):
-	"""Returns the highest frequency value in a list sorted by word frequency.
+	word_q = queue.PriorityQueue()
 
-		:param frequency_list: a list of words and their corresponding frequency
+	for each_key in frequency_list:
+		word_q.put( Word(frequency_list[each_key], each_key) )
 
-		:return: the highest frequency value in the frequency_list
-	"""
-	highest = 0
-	for frequency in frequency_list.values():
-		if frequency > highest:
-			highest = frequency
+	return word_q
 
-	return highest
-
-def parse_search_entry(entry, relationship = "Synonym", begins_with = '', ends_with = ''):
-	"""Takes a search entry and returns the related words with the highest frequency
-	according to the search terms.
-
+def parse_search_entry(entry, relationship, begins_with = '', ends_with = '', this_many_words = sys.maxsize):
+	"""Takes a search entry and returns the words with the highest frequency.
 	:param word: word to look up
 	:param relationship: relationship to entered word ('Synonym' or 'Antonym')
 	:param begins_with: letters that the desired word starts with
 	:param ends_with: letters that the desired word ends with
-
-	:return: a list of the related words with the highest frequency
 	"""
 	entry = entry.strip()
 	words = entry.split(' ')
@@ -88,12 +85,12 @@ def parse_search_entry(entry, relationship = "Synonym", begins_with = '', ends_w
 		related_words = _lookup_word(word, relationship, begins_with, ends_with)
 		all_related_words.append(related_words)
 
-	words_by_frequency = _sort_by_frequency(all_related_words)
-	highest_frequency = _get_highest_frequency(words_by_frequency)
+	results_queue = _sort_by_frequency(all_related_words)
 
-	best_related_words = sorted([word for word, freq in words_by_frequency.items() if freq == highest_frequency])
+	results_list = []
+	for i in range(0, this_many_words):
+		results_list.append(results_queue.get().word)
+		if results_queue.empty():
+			break
 
-	if len(best_related_words) < 10:
-		return best_related_words
-	else:
-		return best_related_words[0:10]
+	return results_list

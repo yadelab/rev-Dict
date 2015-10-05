@@ -40,8 +40,20 @@ def receive_hakk():
 	begins_with = form["begins_with"]
 	ends_with = form["ends_with"]
 
-	results_list = parse_search_entry(entry, 'Synonym', begins_with, ends_with)
-	results_string = ' '.join(results_list)
+	this_many_words_as_string = form["how_many_words"]
+	try:
+		this_many_words = int(this_many_words_as_string)
+	except:
+		#Display that not a valid number
+		placeholder = None
+		this_many_words = None
+	if this_many_words:
+		results_list = parse_search_entry(entry, 'Synonym', begins_with, ends_with, this_many_words)
+	else:
+		results_list = parse_search_entry(entry, 'Synonym', begins_with, ends_with)
+	#if results_list is None:
+		#Display NO_RESULTS
+	results = ', '.join(results_list)
 
 	show = [entry, results]
 	return render_template('home.html', results = show)
