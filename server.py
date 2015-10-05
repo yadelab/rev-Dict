@@ -41,7 +41,7 @@ def receive_hakk():
 	ends_with = form["ends_with"]
 
 	results_list = parse_search_entry(entry, 'Synonym', begins_with, ends_with)
-	results = ' '.join(results_list)
+	results_string = ' '.join(results_list)
 
 	show = [entry, results]
 	return render_template('home.html', results = show)
