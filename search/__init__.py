@@ -1,4 +1,5 @@
-import requests, re
+import requests
+import re
 import queue
 import sys
 
@@ -19,7 +20,7 @@ class Word(object):
     	otherPriority = other.priority
     	return selfPriority > otherPriority
 
-def _lookup_word(word, relationship, begins_with, ends_with):
+def _lookup_word(word, relationship, begins_with, ends_with, searched_words):
 	"""Looks up a word in the Big Huge Thesaurus and returns
 	similar words that fit the parameters.
 	:param word: word to look up
@@ -40,6 +41,10 @@ def _lookup_word(word, relationship, begins_with, ends_with):
 		s = group.split('|')
 		if len(s) > 1:
 			article, rel, synonym = s
+			#Don't repeat words in the search entry
+			if synonym in searched_words:
+				continue
+
 			if rel == relationship:
 				if begins_with or ends_with:
 					if word_re.search(synonym):
@@ -78,19 +83,23 @@ def parse_search_entry(entry, relationship, begins_with = '', ends_with = '', th
 	:param begins_with: letters that the desired word starts with
 	:param ends_with: letters that the desired word ends with
 	"""
+	if not entry:
+		return
+
 	entry = entry.strip()
 	words = entry.split(' ')
 	all_related_words = []
 	for word in words:
-		related_words = _lookup_word(word, relationship, begins_with, ends_with)
+		related_words = _lookup_word(word, relationship, begins_with, ends_with, words)
 		all_related_words.append(related_words)
 
 	results_queue = _sort_by_frequency(all_related_words)
 
 	results_list = []
-	for i in range(0, this_many_words):
-		results_list.append(results_queue.get().word)
+	for i in range(this_many_words):
 		if results_queue.empty():
 			break
+		results_list.append(results_queue.get().word)
+		
 
-	return results_list
+	return sorted(results_list)
