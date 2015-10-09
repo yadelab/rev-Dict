@@ -1,4 +1,5 @@
-import requests, re
+import requests
+import re
 import queue
 import sys
 
