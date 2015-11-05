@@ -21,7 +21,7 @@ def db_read_hakks():
 	cur = get_db().cursor()
 	cur.execute("SELECT * FROM hakks")
 	return cur.fetchall()
-
+#this is to interact ok with
 def db_add_hakk(search, results):
 	cur = get_db().cursor()
 	hakk_info = (search, results)
