@@ -9,6 +9,7 @@ ABBREVIATIONS = {
 	'Synonym': 'syn',
 	'Antonym': 'ant',
 }
+DELIMITER = ','
 
 class Word(object):
     def __init__(self, priority, word):
@@ -54,7 +55,7 @@ def _lookup_word(word, relationship, begins_with, ends_with, searched_words):
 
 	return found_words
 
-def _sort_by_frequency (all_words):
+def _sort_by_frequency(all_words):
 	"""Groups a list of list by their frequency.
 	
 	:param all_words: a list of lists with all words
@@ -76,30 +77,34 @@ def _sort_by_frequency (all_words):
 
 	return word_q
 
-def parse_search_entry(entry, relationship, begins_with = '', ends_with = '', this_many_words = sys.maxsize):
-	"""Takes a search entry and returns the words with the highest frequency.
+def parse_search_entry(entry, relationship, begins_with = '', ends_with = '', num_words = sys.maxsize):
+	"""Takes a search entry and returns the related words with the highest frequency.
 	:param word: word to look up
 	:param relationship: relationship to entered word ('Synonym' or 'Antonym')
 	:param begins_with: letters that the desired word starts with
 	:param ends_with: letters that the desired word ends with
+	:param num_words: number of results to display
+
+	:return: a string with all the related words separated by commas
 	"""
 	if not entry:
 		return
 
 	entry = entry.strip()
-	words = entry.split(' ')
+	words = entry.split(DELIMITER)
 	all_related_words = []
 	for word in words:
+		word = word.strip()
 		related_words = _lookup_word(word, relationship, begins_with, ends_with, words)
 		all_related_words.append(related_words)
 
 	results_queue = _sort_by_frequency(all_related_words)
 
 	results_list = []
-	for i in range(this_many_words):
+	for i in range(num_words):
 		if results_queue.empty():
 			break
 		results_list.append(results_queue.get().word)
 		
-
-	return sorted(results_list)
+	results_list = sorted(results_list)
+	return ', '.join(results_list)
