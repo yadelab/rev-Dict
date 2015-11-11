@@ -1,56 +1,9 @@
-    
 <html>
     <head>
         <title> RevDict</title>
-        <style type="text/css">
-
-
-form.form-inline {
-    display: table-caption;
-    color: white;
-    width: 600px;
-}
-.h2, h2 {
-    font-size: 70px !important;
-    color: white !important;
-}
-.container {
-    padding-top: 47px;
-    margin-left: 32em !important;
-}
-a {
-    color: #DEEBF7;
-    text-decoration: none;
-}
-.Error{
-    margin-top: 10px;
-    text-align: right;
-    display: inline-block;
-    margin-left: 10px;
-}
-.description{
-  color:white;
-  font-size: 16px;
-}
-.btn-default{
-    margin-top: 10px
-}
-body {
-  font-family: Sans-serif;
-  max-width: 500px;
-  margin: auto;
-  padding: 20px;
-  margin-top: 10px;
-  background-color: #402520 !important;
-  border-radius: 5px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-}
-.rd{
-  color:white;
-  font-size: 26px;
-}
-            </style>
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
         </head>
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-left">
@@ -74,12 +27,12 @@ body {
             </ul>
             <div class="container">
                 <h2>RevDict</h2>
-                <p class = "description">Find that word you are looking for.</p>
+                <p class = "description">Find that word you are looking for</p>
                 <form action = "/api/" class="form-inline" role="form" method = "POST">
                     <div class="form-group">
                         <label>Search Bar</label>
                         <br>
-                        <input type="text" name = "search_entry" class="form-control" id="search" placeholder="Enter search words (separated by a space)">
+                        <input type="text" name = "search_entry" class="form-control" id="search" placeholder="Enter search words (separated by commas)">
                         <br>
                     </div>
                     {% if results and not results[0] %}
@@ -123,9 +76,9 @@ body {
                             <!--
         <form>
             Synonym
-            <input name="synonmym" type ="radio"/>
+            <input name="synonym" type ="radio"/>
             Antonym
             <input name="antonym" type ="radio"/></form><-->
                             <!--  <form align="center"><input class="btn btn-default" type="submit" /></form><div id="feed"></div> -->
-                        </head>
-                    </html>
+    </head>
+</html>
