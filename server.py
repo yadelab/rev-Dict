@@ -1,5 +1,6 @@
 import sqlite3
 import time
+import os
 from search import parse_search_entry
 from flask import Flask, request, g, render_template, redirect
 app = Flask(__name__)
@@ -31,4 +32,6 @@ def receive_search():
 	return render_template('home.html', results = data)
 
 if __name__ == "__main__":
-	app.run()
+	port = int(os.environ.get("PORT", 5000))
+	app.run(debug=False, host='0.0.0.0', port=port)
+
