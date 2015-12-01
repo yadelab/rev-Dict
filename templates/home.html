@@ -27,12 +27,12 @@
             </ul>
             <div class="container">
                 <h2>RevDict</h2>
-                <p class = "description">Find that word you are looking for</p>
+                <h5 class = "description">Find that word you are looking for</h5>
                 <form action = "/api/" class="form-inline" role="form" method = "POST">
                     <div class="form-group">
                         <label>Search Bar</label>
                         <br>
-                        <input type="text" name = "search_entry" class="form-control" id="search" placeholder="Enter search words (separated by commas)">
+                        <input type="text" name = "search_entry" class="form-control" id="search" placeholder="Separated with commas">
                         <br>
                     </div>
                     {% if results and not results[0] %}
@@ -42,19 +42,19 @@
                     <div class="form-group">
                         <label>Starts With?</label>
                         <br>
-                        <input type="text" name = "begins_with" class="form-control" id="start" placeholder="first letters">
+                        <input type="text" name = "begins_with" class="form-control" id="start" placeholder="First letters">
                     </div>
                     <br>
                     <div class="form-group">
                         <label>Ends With?</label>
                         <br>
-                        <input type="text" name = "ends_with" class="form-control" id="end" placeholder="last letters">
+                        <input type="text" name = "ends_with" class="form-control" id="end" placeholder="Last letters">
                     </div>
                     <br>
                     <div class="form-group">
                         <label>How Many Words?</label>
                         <br>
-                        <input type="number" name = "how_many_words" class="form-control" id="end" placeholder="The number of words you want">
+                        <input type="number" name = "how_many_words" class="form-control" id="end" placeholder="Number of results">
                     </div>
                     <br>
 
